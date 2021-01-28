@@ -40,9 +40,11 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'joepreludian-docker-creds',
                         usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PW')]) {
-	                    sh "docker login --username \"${DOCKER_USER}\" --password \"${DOCKER_PW}\""
-	                    sh 'docker tag python-poetry-build-${env.BUILD_NUMBER} joepreludian/python-poetry:latest'
-	                    sh 'docker push joepreludian/python-poetry:latest'
+	                    sh 'docker login --username "$DOCKER_USER" --password "$DOCKER_PW"'
+
+	                    figlet 'Push Image'
+	                    sh 'docker tag "python-poetry-build-${env.BUILD_NUMBER}"" "joepreludian/python-poetry:latest"'
+	                    sh 'docker push "joepreludian/python-poetry:latest"'
                     }
                 }
             }
@@ -53,9 +55,12 @@ pipeline {
             echo "Cleaning up docker image"
             sh "docker rmi python-poetry-build-${env.BUILD_NUMBER} || true"
             sh 'docker rmi joepreludian/python-poetry:latest || true'
+            sh 'docker logout'
+            /*
             script {
                 currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
             }
+            */
         }
     }
 }
