@@ -37,8 +37,10 @@ pipeline {
             steps {
                 echo 'Deploy image'
                 script {
-                    docker.withRegistry('https://hub.docker.com', 'joepreludian-docker-creds') {
-                        docker.build("joepreludian/python-poetry").push('latest')
+                    withCredentials([usernamePassword(credentialsId: 'joepreludian-docker-creds',
+                        usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PW')]) {
+	                    sh "echo \"${DOCKER_PW}\" | docker login --username \"${DOCKER_USER}\" --password-stdin"
+	                    sh "docker tag python-poetry-build-${env.BUILD_NUMBER}:latest joepreludian/python-poetry:latest"
                     }
                 }
             }
@@ -47,7 +49,8 @@ pipeline {
     post {
         always {
             echo "Cleaning up docker image"
-            sh "docker rmi python-poetry-build-${env.BUILD_NUMBER}"
+            sh "docker rmi python-poetry-build-${env.BUILD_NUMBER} || true"
+            sh 'docker rmi joepreludian/python-poetry:latest'
         }
     }
 }
