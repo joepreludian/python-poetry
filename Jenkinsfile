@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker build -t python-poetry-build-${env.BUILD_NUMBER} ."
+                sh "docker build --rm --compress -t python-poetry-build-${env.BUILD_NUMBER} ."
+                sh "docker images | grep \"python-poetry-build-\""
             }
         }
         stage('Inspect') {
@@ -39,8 +40,9 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'joepreludian-docker-creds',
                         usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PW')]) {
-	                    sh "echo \"${DOCKER_PW}\" | docker login --username \"${DOCKER_USER}\" --password-stdin"
-	                    sh "docker tag python-poetry-build-${env.BUILD_NUMBER}:latest joepreludian/python-poetry:latest"
+	                    sh "docker login --username \"${DOCKER_USER}\" --password \"${DOCKER_PW}\""
+	                    sh 'docker tag python-poetry-build-${env.BUILD_NUMBER} joepreludian/python-poetry:latest'
+	                    sh 'docker push joepreludian/python-poetry:latest'
                     }
                 }
             }
