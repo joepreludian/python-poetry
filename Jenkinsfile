@@ -37,7 +37,7 @@ pipeline {
             steps {
                 echo 'Deploy image'
                 script {
-                    docker.withRegistry('https://hub.docker.com', 'joepreludian-docker-creds') {
+                    docker.withRegistry('docker.io', 'joepreludian-docker-creds') {
                         docker.build("joepreludian/python-poetry").push('latest')
                     }
                 }
