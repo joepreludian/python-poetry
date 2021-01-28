@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker build --rm --compress -t python-poetry-build-${env.BUILD_NUMBER} ."
+                sh "docker build --compress -t python-poetry-build-${env.BUILD_NUMBER} ."
                 sh "docker images | grep \"python-poetry-build-\""
             }
         }
