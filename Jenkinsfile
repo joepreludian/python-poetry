@@ -3,14 +3,14 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker build --compress -t python-poetry-build-${env.BUILD_NUMBER} ."
+                sh "docker build --compress -t python-poetry-build-${env.BUILD_NUMBER}:latest ."
                 sh "docker images | grep \"python-poetry-build-\""
             }
         }
         stage('Inspect') {
             agent {
                 docker {
-                    image "python-poetry-build-${env.BUILD_NUMBER}"
+                    image "python-poetry-build-${env.BUILD_NUMBER}:latest"
                 }
             }
             steps {
@@ -22,7 +22,7 @@ pipeline {
  		stage('Testing') {
  		    agent {
                 docker {
-                    image "python-poetry-build-${env.BUILD_NUMBER}"
+                    image "python-poetry-build-${env.BUILD_NUMBER}:latest"
                 }
             }
             steps {
@@ -43,7 +43,7 @@ pipeline {
 	                    sh 'docker login --username "$DOCKER_USER" --password "$DOCKER_PW"'
 
 	                    figlet 'Tag'
-	                    sh 'docker tag "python-poetry-build-${env.BUILD_NUMBER}:latest" "joepreludian/python-poetry:latest"'
+	                    sh 'docker tag python-poetry-build-${env.BUILD_NUMBER}:latest joepreludian/python-poetry:latest'
 
 	                    figlet 'Push'
 	                    sh 'docker push joepreludian/python-poetry:latest'
