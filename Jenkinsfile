@@ -53,8 +53,9 @@ pipeline {
             echo "Cleaning up docker image"
             sh "docker rmi python-poetry-build-${env.BUILD_NUMBER} || true"
             sh 'docker rmi joepreludian/python-poetry:latest || true'
-
-            currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
+            script {
+                currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
+            }
         }
     }
 }
