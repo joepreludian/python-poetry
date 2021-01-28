@@ -1,9 +1,9 @@
 FROM docker.io/python:alpine
 
 RUN apk update && \
-    apk add --virtual .build-deps build-base gcc cmake linux-headers gcc libffi-dev libressl-dev
+    apk add --virtual .build-deps build-base gcc cmake linux-headers gcc libffi-dev libressl-dev gettext
 
-RUN pip install poetry && \
+RUN pip install --upgrade pip && pip install poetry && \
     apk del .build-deps && \
     poetry -V
 
