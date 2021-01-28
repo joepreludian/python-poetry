@@ -18,7 +18,7 @@ pipeline {
                 sh 'poetry --version'
      		}
  		}
- 		stage('Perform testings') {
+ 		stage('Testing') {
  		    agent {
                 docker {
                     image "python-poetry-build-${env.BUILD_NUMBER}"
@@ -35,7 +35,12 @@ pipeline {
                 branch 'master'
             }
             steps {
-                echo 'Deploy'
+                echo 'Deploy image'
+                script {
+                    docker.withRegistry('https://hub.docker.com', 'joepreludian-docker-creds') {
+                        docker.build("joepreludian/python-poetry").push('latest')
+                    }
+                }
             }
         }
     }
