@@ -43,8 +43,8 @@ pipeline {
 	                    sh 'docker login --username "$DOCKER_USER" --password "$DOCKER_PW"'
 
 	                    figlet 'Push Image'
-	                    sh 'docker tag "python-poetry-build-${env.BUILD_NUMBER}"" "joepreludian/python-poetry:latest"'
-	                    sh 'docker push "joepreludian/python-poetry:latest"'
+	                    sh 'docker tag "python-poetry-build-${env.BUILD_NUMBER}" "joepreludian/python-poetry:latest"'
+	                    sh 'docker push joepreludian/python-poetry:latest'
                     }
                 }
             }
