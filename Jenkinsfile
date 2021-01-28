@@ -18,5 +18,31 @@ pipeline {
                 sh 'poetry --version'
      		}
  		}
+ 		stage('Perform testings') {
+ 		    agent {
+                docker {
+                    image "python-poetry-build-${env.BUILD_NUMBER}"
+                }
+            }
+            steps {
+                sh 'python --version'
+                sh 'pip --version'
+                sh 'poetry --version'
+     		}
+ 		}
+        stage('Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Deploy'
+            }
+        }
+    }
+    post {
+        always {
+            echo "Cleaning up docker image"
+            sh "docker rmi python-poetry-build-${env.BUILD_NUMBER}"
+        }
     }
 }
