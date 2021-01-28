@@ -42,8 +42,10 @@ pipeline {
                         usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PW')]) {
 	                    sh 'docker login --username "$DOCKER_USER" --password "$DOCKER_PW"'
 
-	                    figlet 'Push Image'
-	                    sh 'docker tag "python-poetry-build-${env.BUILD_NUMBER}" "joepreludian/python-poetry:latest"'
+	                    figlet 'Tag'
+	                    sh 'docker tag "python-poetry-build-${env.BUILD_NUMBER}:latest" "joepreludian/python-poetry:latest"'
+
+	                    figlet 'Push'
 	                    sh 'docker push joepreludian/python-poetry:latest'
                     }
                 }
