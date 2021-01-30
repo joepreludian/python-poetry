@@ -1,3 +1,7 @@
+def setBuild() {
+    currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
+}
+
 pipeline {
     agent any
     stages {
@@ -17,9 +21,7 @@ pipeline {
                 sh 'python --version'
                 sh 'pip --version'
                 sh 'poetry --version'
-                script {
-                    currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
-                }
+                setBuild()
      		}
  		}
         stage('Deploy') {
