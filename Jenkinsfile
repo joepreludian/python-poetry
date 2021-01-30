@@ -17,18 +17,9 @@ pipeline {
                 sh 'python --version'
                 sh 'pip --version'
                 sh 'poetry --version'
-     		}
- 		}
- 		stage('Testing') {
- 		    agent {
-                docker {
-                    image "python-poetry-build-${env.BUILD_NUMBER}:latest"
+                script {
+                    currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
                 }
-            }
-            steps {
-                sh 'python --version'
-                sh 'pip --version'
-                sh 'poetry --version'
      		}
  		}
         stage('Deploy') {
@@ -58,11 +49,6 @@ pipeline {
             sh "docker rmi python-poetry-build-${env.BUILD_NUMBER} || true"
             sh 'docker rmi joepreludian/python-poetry:latest || true'
             sh 'docker logout'
-            /*
-            script {
-                currentBuild.rawBuild.project.description = '<h3>Python Poetry</h3><p>Temp</p>'
-            }
-            */
         }
     }
 }
