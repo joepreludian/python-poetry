@@ -7,4 +7,4 @@ RUN pip install --upgrade pip && pip install poetry && \
     apk del .build-deps && \
     poetry -V
 
-CMD ['poetry']
+CMD [poetry"]
